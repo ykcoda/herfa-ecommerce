@@ -1,8 +1,10 @@
 from fastapi import FastAPI
 from scalar_fastapi import get_scalar_api_reference
+from app.api.routes.master import master
 
 # initiating fast api
 app = FastAPI()
+app.include_router(master)  # add master router
 
 
 # api home page
