@@ -3,7 +3,7 @@ from app.utils import logging_service, LogType, LogServiceType
 import os
 
 _base_config = SettingsConfigDict(
-    env_file="../env", env_ignore_empty=True, extra="ignore"
+    env_file=".env", env_ignore_empty=True, extra="ignore"
 )
 
 
