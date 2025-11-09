@@ -10,8 +10,14 @@ class UserBase(SQLModel):
     first_name: str
     last_name: str
     email: EmailStr
+    role: UserRole
+    active: bool = False
     password: str
     phone_number: str
+
+
+class UserCreate(UserBase):
+    pass
 
 
 class UserRead(UserBase):
@@ -22,13 +28,9 @@ class UserRead(UserBase):
     created_at: datetime
 
 
-class UserCreate(UserBase):
-    pass
-
-
 class UserUpdate(SQLModel):
     first_name: str | None = None
     last_name: str | None = None
-    role: UserRole
+    role: UserRole | None = None
     active: bool | None = None
     phone_number: str | None = None
