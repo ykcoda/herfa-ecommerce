@@ -1,4 +1,4 @@
-from sqlmodel import SQLModel
+from sqlmodel import SQLModel, Field
 from pydantic import EmailStr
 from datetime import datetime
 from uuid import UUID
@@ -27,8 +27,8 @@ class UserCreate(UserBase):
 
 
 class UserUpdate(SQLModel):
-    first_name: str
-    last_name: str
+    first_name: str | None = None
+    last_name: str | None = None
     role: UserRole
-    active: bool
-    phone_number: str
+    active: bool | None = None
+    phone_number: str | None = None
