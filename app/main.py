@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from scalar_fastapi import get_scalar_api_reference
 from app.api.routes.master import master
+from app.utils import logging_service, LogServiceType, LogType
+
 
 # initiating fast api
 app = FastAPI()
@@ -10,6 +12,13 @@ app.include_router(master)  # add master router
 # api home page
 @app.get("/api")
 async def home():
+    # logging_service.set_log("TEST lOGS", LogType.WARNING)
+    logging_service.set_log(
+        "NEW TEST Test log report",
+        service_type=LogServiceType.LOGS,
+        log_type=LogType.INFO,
+    )
+
     return {"message": "Herfa-Ecommerce"}
 
 
