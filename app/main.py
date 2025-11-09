@@ -12,13 +12,6 @@ app.include_router(master)  # add master router
 # api home page
 @app.get("/api")
 async def home():
-    # logging_service.set_log("TEST lOGS", LogType.WARNING)
-    logging_service.set_log(
-        "NEW TEST Test log report",
-        service_type=LogServiceType.LOGS,
-        log_type=LogType.INFO,
-    )
-
     return {"message": "Herfa-Ecommerce"}
 
 
