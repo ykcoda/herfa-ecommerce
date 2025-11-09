@@ -1,4 +1,5 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from app.utils import logging_service, LogType, LogServiceType
 import os
 
 _base_config = SettingsConfigDict(
@@ -7,8 +8,26 @@ _base_config = SettingsConfigDict(
 
 
 class DatataseSettings(BaseSettings):
-    POSTGRES_HOST = "localhost"
-    POSTGRES_PORT = 5432
-    POSTGRES_DB = "herfa-ecommerce"
-    POSTGRES_USER = "postgres"
-    POSTGRES_PASS = "password.1"
+    def __int__(self):
+        # log whenever DatabaseSetting is called
+        logging_service.set_log(
+            message="Database Settings was used",
+            service_type=LogServiceType.DATABASE,
+            log_type=LogType.INFO,
+        )
+
+    POSTGRES_HOST: str = os.getenv("POSTGRES_HOST") or ""
+    POSTGRES_PORT: int = int(os.getenv("POSTGRES_PORT") or 0)
+    POSTGRES_DB: str = os.getenv("POSTGRES_DB") or ""
+    POSTGRES_USER: str = os.getenv("POSTGRES_USER") or ""
+    POSTGRES_PASS: str = os.getenv("POSTGRES_PASS") or ""
+
+    model_config = _base_config
+
+    @property
+    def DB_URL(self):
+        return f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASS}@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
+
+
+# instantiate DatabaseSetting()
+database_settings = DatataseSettings()
