@@ -10,7 +10,7 @@ app.include_router(master)  # add master router
 
 
 # api home page
-@app.get("/api")
+@app.get("/api", include_in_schema=False)
 async def home():
     return {"message": "Herfa-Ecommerce"}
 

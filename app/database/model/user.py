@@ -20,6 +20,6 @@ class User(SQLModel, table=True):
     password_hash: str
     phone_number: str
     role: UserRole = Field(default=UserRole.ADMIN)
-    active: bool = Field(default=False)
+    active: bool = Field(default=True)
     updated_at: datetime = Field(default_factory=datetime.now)
     created_at: datetime = Field(default_factory=datetime.now)
