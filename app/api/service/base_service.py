@@ -1,6 +1,6 @@
 from sqlmodel import SQLModel, select
 from sqlmodel.ext.asyncio.session import AsyncSession
-from typing import TypeVar, Generic, Type, Sequence
+from typing import TypeVar, Generic, Type, Sequence, Any
 from uuid import UUID
 
 
@@ -15,7 +15,7 @@ class BaseService(Generic[T]):
         self.session = session
 
     # resturn a single entity by passing its id
-    async def _get(self, id: UUID) -> T | None:
+    async def _get(self, id: UUID):
         """Get a single entity by passing its id"""
         return await self.session.get(self.model, id)
 
@@ -27,7 +27,7 @@ class BaseService(Generic[T]):
         return result.all()
 
     # create an entity
-    async def _create(self, entity: Type[T]) -> Type[T]:
+    async def _create(self, entity: Any) -> Type[T]:
         """Create a new entity"""
         self.session.add(entity)
         await self.session.commit()
@@ -35,13 +35,13 @@ class BaseService(Generic[T]):
         return entity
 
     # update an entity
-    async def _update(self, entity: Type[T]) -> Type[T]:
+    async def _update(self, entity: Any) -> Type[T]:
         """Updates an entity"""
         await self._create(entity)
         return entity
 
     # delete an entity
-    async def _delete(self, entity: Type[T]) -> bool:
+    async def _delete(self, entity: Any) -> bool:
         """Delete an entity"""
         await self.session.delete(entity)
         await self.session.commit()
