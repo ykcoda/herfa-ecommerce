@@ -167,7 +167,4 @@ class UserService(BaseService):
             )
 
         # return generated jwt token
-        return {
-            "access_token": token,
-            "token_type": "jwt",
-        }
+        return token
