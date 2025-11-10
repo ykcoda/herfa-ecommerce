@@ -1,6 +1,14 @@
 import logging
 import os
 from enum import Enum
+from uuid import uuid4
+from datetime import datetime, timedelta, timezone
+import jwt
+
+
+"""_summary_
+    LogSevice Class to handling logging in the App
+"""
 
 
 class LogServiceType(str, Enum):
@@ -84,3 +92,47 @@ class LoggingService:
 
 # create an instance of the LoggingServiceß
 logging_service = LoggingService()
+
+
+"""_summary_
+    JWT OAuth2 Authentication functions to handling user authentication
+"""
+
+
+# generate encoded JWT
+def generate__jwt_token(user_data: dict, expiry=timedelta(minutes=30)):
+    from app.config import security_settings
+
+    try:
+        return jwt.encode(
+            payload={
+                "user": user_data,
+                "exp": datetime.now(timezone.utc) + expiry,
+                "jti": str(uuid4()),
+            },
+            key=security_settings.JWT_SECRET,
+            algorithm=security_settings.JWT_ALGORITHM,
+        )
+    except Exception as e:
+        logging_service.set_log(
+            message=f"{e}", log_service_type=LogServiceType.LOGS, log_type=LogType.ERROR
+        )
+        return None
+
+
+# decode encoded JWT
+def decode_encoded_jwt_token(token: str):
+    from app.config import security_settings
+
+    try:
+        return jwt.decode(
+            jwt=token,
+            key=security_settings.JWT_SECRET,
+            algorithms=[security_settings.JWT_ALGORITHM],
+        )
+
+    except Exception as e:
+        logging_service.set_log(
+            message=f"{e}", log_service_type=LogServiceType.LOGS, log_type=LogType.ERROR
+        )
+        return None
