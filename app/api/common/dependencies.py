@@ -13,6 +13,7 @@ from app.utils import (
     redis_service,
 )
 from app.api.service.category_service import CategoryService
+from app.api.service.product_service import ProductService
 
 # Database Session Dependency
 DB_SESSION_DEP = Annotated[AsyncSession, Depends(get_db_async_session)]
@@ -34,6 +35,15 @@ async def get_category_service(session: DB_SESSION_DEP):
 
 # Category Service Dependency
 CATEGORY_SERVICE_DEP = Annotated[CategoryService, Depends(get_category_service)]
+
+
+# create a ProductServiceDependant
+async def get_product_service(session: DB_SESSION_DEP):
+    return ProductService(session)
+
+
+# Product Service Dependency
+PRODUCT_SERVICE_DEP = Annotated[ProductService, Depends(get_product_service)]
 
 
 # Allow Authorized users to access restricted endpoint
