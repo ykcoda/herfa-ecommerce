@@ -43,6 +43,5 @@ class BaseService(Generic[T]):
     # delete an entity
     async def _delete(self, entity: Any) -> bool:
         """Delete an entity"""
-        await self.session.delete(entity)
-        await self.session.commit()
+        await self._create(entity)
         return True
