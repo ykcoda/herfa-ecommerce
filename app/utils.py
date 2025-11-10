@@ -3,6 +3,7 @@ import os
 from enum import Enum
 from uuid import uuid4
 from datetime import datetime, timedelta, timezone
+from redis.asyncio import Redis
 import jwt
 
 
@@ -90,7 +91,7 @@ class LoggingService:
                     pass
 
 
-# create an instance of the LoggingServiceß
+# create an instance of the LoggingService
 logging_service = LoggingService()
 
 
@@ -136,3 +137,35 @@ def decode_encoded_jwt_token(token: str):
             message=f"{e}", log_service_type=LogServiceType.LOGS, log_type=LogType.ERROR
         )
         return None
+
+
+"""_summary_
+    Redis Service
+"""
+
+
+class RedisService:
+
+    def __init__(self):
+        from app.config import database_settings
+
+        # setup redis connection
+        self.redis = Redis(
+            host=database_settings.REDIS_SERVER,
+            port=database_settings.REDIS_PORT,
+            db=0,
+        )
+
+    # save jti(Token ID) to redis - marked as blacklisted
+    async def save_to_redis(self, jti: str):
+        async with self.redis as r:
+            await r.set(jti, "blacklisted")
+
+    # check if jti exists in redis
+    async def jti_exists(self, jti: str):
+        async with self.redis as r:
+            return await r.exists(jti)
+
+
+# create an instance of the RedisService
+redis_service = RedisService()
