@@ -69,14 +69,14 @@ class UserService(BaseService):
         if not user:
             # log
             logging_service.set_log(
-                message=f"User with id '{id}' doen't exist",
+                message=f"User with id '{id}' doesn't exist",
                 log_type=LogType.ERROR,
                 log_service_type=LogServiceType.DATABASE,
             )
             # raise and exception if user is not found
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"User with id '{id}' doen't exist",
+                detail=f"User with id '{id}' doesn't exist",
             )
 
         # update users updated_at to current datetime
@@ -101,14 +101,14 @@ class UserService(BaseService):
         if not user:
             # log
             logging_service.set_log(
-                message=f"User with id '{id}' doen't exist",
+                message=f"User with id '{id}' dosen't exist",
                 log_type=LogType.ERROR,
                 log_service_type=LogServiceType.DATABASE,
             )
             # raise and exception if user is not found
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"User with id '{id}' doen't exist",
+                detail=f"User with id '{id}' doesn't exist",
             )
 
         # update users deleted attribure to true

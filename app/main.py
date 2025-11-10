@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from scalar_fastapi import get_scalar_api_reference
 from app.api.routes.master import master
-from app.utils import logging_service, LogServiceType, LogType
 
 
 # initiating fast api

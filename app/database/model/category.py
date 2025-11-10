@@ -13,6 +13,7 @@ class Category(SQLModel, table=True):
     id: UUID = Field(default_factory=uuid4, primary_key=True)
     name: str
     description: str
+    deleted: bool | None = None
     created_at: datetime = Field(default_factory=datetime.now)
 
     # Relationship
