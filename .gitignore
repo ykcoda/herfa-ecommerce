@@ -6,6 +6,10 @@ __pycache__/
 # database info
 *db_backup
 *my_test.py
+
+# others
+.DS_Store
+
 # C extensions
 *.so
 *logs/
