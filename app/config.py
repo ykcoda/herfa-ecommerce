@@ -6,6 +6,10 @@ _base_config = SettingsConfigDict(
     env_file=".env", env_ignore_empty=True, extra="ignore"
 )
 
+"""_summary_
+    Database Settings
+"""
+
 
 class DatataseSettings(BaseSettings):
     def __int__(self):
@@ -31,3 +35,17 @@ class DatataseSettings(BaseSettings):
 
 # instantiate DatabaseSetting()
 database_settings = DatataseSettings()
+
+"""_summary_
+    Security Settings
+"""
+
+
+class SecuritySettings(BaseSettings):
+    JWT_ALGORITHM: str = os.getenv("JWT_ALGORITHM") or ""
+    JWT_SECRET: str = os.getenv("JWT_SECRET") or ""
+    model_config = _base_config
+
+
+# instantiate SecuritySettings()
+security_settings = SecuritySettings()
