@@ -1,4 +1,4 @@
-from sqlmodel import SQLModel, Field
+from sqlmodel import SQLModel
 from pydantic import EmailStr
 from datetime import datetime
 from uuid import UUID
@@ -20,10 +20,14 @@ class UserCreate(UserBase):
     pass
 
 
-class UserRead(UserBase):
+class UserRead(SQLModel):
     id: UUID
+    first_name: str
+    last_name: str
+    email: EmailStr
     role: UserRole
     active: bool
+    deleted: bool
     updated_at: datetime
     created_at: datetime
 
@@ -33,4 +37,5 @@ class UserUpdate(SQLModel):
     last_name: str | None = None
     role: UserRole | None = None
     active: bool | None = None
+    deleted: bool | None = None
     phone_number: str | None = None

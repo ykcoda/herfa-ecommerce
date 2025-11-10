@@ -1,10 +1,15 @@
 from fastapi import APIRouter
-from app.database.schemas.user import UserCreate, UserUpdate
+from app.database.schemas.user import UserCreate, UserRead, UserUpdate
 from app.api.common.dependencies import USER_SERVICE_DEP
 from uuid import UUID
 
 # create an endpoint router for users
 users = APIRouter(prefix="/api/users", tags=["Users"])
+
+
+@users.get("/", response_model=list[UserRead])
+async def get_all_users(service: USER_SERVICE_DEP):
+    return await service.get_all_user()
 
 
 # register new user

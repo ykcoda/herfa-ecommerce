@@ -42,7 +42,7 @@ class LoggingService:
     def set_log(
         self,
         message: str,
-        service_type: LogServiceType | None = None,
+        log_service_type: LogServiceType | None = None,
         log_type: LogType = LogType.INFO,
     ):
         """Create a log by accepting the LogServiceType and the LogType"""
@@ -52,11 +52,11 @@ class LoggingService:
 
         # Determines the log file to use based on the service_type
         for service in LogServiceType:
-            if service.value == service_type:
+            if service.value == log_service_type:
                 filename = f"{self._base_dir}{service.value}{self.file_extention}"
 
         # log config to use
-        logger = logging.getLogger(service_type or "logs")
+        logger = logging.getLogger(log_service_type or "logs")
 
         if not logger.handlers:
             file_handler = logging.FileHandler(filename)
