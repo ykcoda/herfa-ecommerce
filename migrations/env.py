@@ -10,6 +10,8 @@ from alembic import context
 
 
 from app.database.model.user import User  # noqa
+from app.database.model.product import Product  # noqa
+from app.database.model.category import Category  # noqa
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
