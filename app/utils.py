@@ -100,7 +100,7 @@ logging_service = LoggingService()
 
 
 # generate encoded JWT
-def generate__jwt_token(user_data: dict, expiry=timedelta(minutes=30)):
+def generate_jwt_token(user_data: dict, expiry=timedelta(minutes=30)):
     from app.config import security_settings
 
     try:
