@@ -5,7 +5,7 @@ __pycache__/
 
 # database info
 *db_backup
-
+*my_test.py
 # C extensions
 *.so
 *logs/
