@@ -1,16 +1,21 @@
 from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from app.database.schemas.user import UserCreate, UserRead, UserUpdate
-from app.api.common.dependencies import USER_SERVICE_DEP
+from app.api.common.dependencies import USER_SERVICE_DEP, AUTHENTICATED_USER_DEP
 from uuid import UUID
 from typing import Annotated
+
 
 # create an endpoint router for users
 users = APIRouter(prefix="/api/users", tags=["Users"])
 
 
 @users.get("/", response_model=list[UserRead])
-async def get_all_users(service: USER_SERVICE_DEP):
+async def get_all_users(
+    service: USER_SERVICE_DEP,
+    authorized_user: AUTHENTICATED_USER_DEP,
+):
+
     return await service.get_all_user()
 
 
