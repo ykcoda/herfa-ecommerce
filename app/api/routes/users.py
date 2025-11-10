@@ -1,7 +1,9 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from fastapi.security import OAuth2PasswordRequestForm
 from app.database.schemas.user import UserCreate, UserRead, UserUpdate
 from app.api.common.dependencies import USER_SERVICE_DEP
 from uuid import UUID
+from typing import Annotated
 
 # create an endpoint router for users
 users = APIRouter(prefix="/api/users", tags=["Users"])
@@ -28,3 +30,12 @@ async def update_user(id: UUID, data: UserUpdate, service: USER_SERVICE_DEP):
 @users.delete("/delete")
 async def delete_user(id: UUID, service: USER_SERVICE_DEP):
     return await service.delete_user(id)
+
+
+# login user and generate jwt token
+@users.post("/token")
+async def login_user(
+    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
+    service: USER_SERVICE_DEP,
+):
+    return await service.login_user(form_data.username, form_data.password)
