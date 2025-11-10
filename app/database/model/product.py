@@ -16,8 +16,8 @@ class Product(SQLModel, table=True):
     description: str
     price: float
     stock_quantity: int
-    active: bool
-    deleted: bool | None = None
+    active: bool = Field(default=True)
+    deleted: bool = Field(default=False)
     created_at: datetime = Field(default_factory=datetime.now)
     updated_at: datetime = Field(default_factory=datetime.now)
 
