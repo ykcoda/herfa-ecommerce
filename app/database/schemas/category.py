@@ -11,6 +11,13 @@ class ReadCategory(BaseCategory):
     id: UUID
 
 
+class ReadProductCategory(SQLModel):
+    name: str
+    description: str
+
+    model_config = {"from_attributes": True}
+
+
 class CreateCategory(BaseCategory):
     pass
 
