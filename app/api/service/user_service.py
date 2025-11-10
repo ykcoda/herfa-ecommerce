@@ -6,7 +6,13 @@ from app.api.service.base_service import BaseService
 from app.database.schemas.user import UserCreate, UserUpdate
 from datetime import datetime
 from uuid import UUID
-from app.utils import logging_service, LogType, LogServiceType
+from app.utils import (
+    logging_service,
+    LogType,
+    LogServiceType,
+    generate_jwt_token,
+    decode_encoded_jwt_token,
+)
 
 from pwdlib import PasswordHash
 
@@ -118,3 +124,50 @@ class UserService(BaseService):
             log_service_type=LogServiceType.DATABASE,
         )
         return {"detail": "User deleted!"}
+
+    # authenticate user and generate jwt token
+    async def login_user(self, email: str, password: str):
+        # get user with their email
+        user = await self.get_user_by_email(email)
+
+        # raise an exception if users email or password is invalid
+        if not user or not password_hash.verify(password, user.password_hash):
+            # log
+            logging_service.set_log(
+                message=f"{email} is unauthorized. Email or password is incorrect.",
+                log_service_type=LogServiceType.DATABASE,
+                log_type=LogType.ERROR,
+            )
+            # raise exception
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail=f"{email} is unauthorized. Email or password is incorrect.",
+            )
+
+        # build dict to generate a token for authorized user
+        user_data = {
+            "id": str(user.id),
+            "email": user.email,
+        }
+
+        # generate jwt token for the authorized user
+        token = generate_jwt_token(user_data=user_data)
+
+        if not token:
+            # log
+            logging_service.set_log(
+                message=f"Token was not generated for {user.email}",
+                log_service_type=LogServiceType.SERVICE,
+                log_type=LogType.ERROR,
+            )
+            # raise exception
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Token was not generated for {user.email}",
+            )
+
+        # return generated jwt token
+        return {
+            "access_token": token,
+            "token_type": "jwt",
+        }
