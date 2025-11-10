@@ -21,5 +21,6 @@ class User(SQLModel, table=True):
     phone_number: str
     role: UserRole = Field(default=UserRole.ADMIN)
     active: bool = Field(default=True)
+    deleted: bool = Field(default=False, nullable=True)
     updated_at: datetime = Field(default_factory=datetime.now)
     created_at: datetime = Field(default_factory=datetime.now)
