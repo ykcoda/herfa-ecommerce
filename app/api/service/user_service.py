@@ -3,16 +3,10 @@ from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 from app.database.model.user import User
 from app.api.service.base_service import BaseService
-from app.database.schemas.user import UserCreate, UserUpdate
+from app.database.schemas.user import CreateUser, UpdateUser
 from datetime import datetime
 from uuid import UUID
-from app.utils import (
-    logging_service,
-    LogType,
-    LogServiceType,
-    generate_jwt_token,
-    decode_encoded_jwt_token,
-)
+from app.utils import logging_service, LogType, LogServiceType, generate_jwt_token
 
 from pwdlib import PasswordHash
 
@@ -36,7 +30,7 @@ class UserService(BaseService):
         return await self._get_all()
 
     # create a user
-    async def create_user(self, user: UserCreate):
+    async def create_user(self, user: CreateUser):
         # check if email exists in uses table
         if not await self.get_user_by_email(user.email):
             # only create user if the email is not present in users table
@@ -63,7 +57,7 @@ class UserService(BaseService):
             )
 
     # update a user
-    async def update_user(self, id: UUID, user_data: UserUpdate):
+    async def update_user(self, id: UUID, user_data: UpdateUser):
         # get user by id
         user = await self._get(id)
         if not user:

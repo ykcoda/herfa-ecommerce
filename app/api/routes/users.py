@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
-from app.database.schemas.user import UserCreate, UserRead, UserUpdate
+from app.database.schemas.user import ReadUser, CreateUser, UpdateUser
 from app.api.common.dependencies import USER_SERVICE_DEP, AUTHENTICATED_USER_DEP
 from app.utils import logging_service, LogServiceType, LogType, redis_service
 from uuid import UUID
@@ -10,7 +10,7 @@ from typing import Annotated
 users = APIRouter(prefix="/api/users", tags=["Users"])
 
 
-@users.get("/", response_model=list[UserRead])
+@users.get("/", response_model=list[ReadUser])
 async def get_all_users(
     service: USER_SERVICE_DEP,
     authorized_user: AUTHENTICATED_USER_DEP,
@@ -21,7 +21,7 @@ async def get_all_users(
 
 # register new user
 @users.post("/register")
-async def register_user(data: UserCreate, service: USER_SERVICE_DEP):
+async def register_user(data: CreateUser, service: USER_SERVICE_DEP):
     return await service.create_user(data)
 
 
@@ -29,7 +29,7 @@ async def register_user(data: UserCreate, service: USER_SERVICE_DEP):
 @users.put("/update")
 async def update_user(
     id: UUID,
-    data: UserUpdate,
+    data: UpdateUser,
     service: USER_SERVICE_DEP,
     authorized_user: AUTHENTICATED_USER_DEP,
 ):

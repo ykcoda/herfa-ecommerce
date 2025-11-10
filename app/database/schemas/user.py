@@ -6,7 +6,7 @@ from uuid import UUID
 from app.database.model.user import UserRole
 
 
-class UserBase(SQLModel):
+class BaseUser(SQLModel):
     first_name: str
     last_name: str
     email: EmailStr
@@ -16,11 +16,11 @@ class UserBase(SQLModel):
     phone_number: str
 
 
-class UserCreate(UserBase):
+class CreateUser(BaseUser):
     pass
 
 
-class UserRead(SQLModel):
+class ReadUser(SQLModel):
     id: UUID
     first_name: str
     last_name: str
@@ -32,7 +32,14 @@ class UserRead(SQLModel):
     created_at: datetime
 
 
-class UserUpdate(SQLModel):
+class ReadProductUser(SQLModel):
+    email: EmailStr
+    role: UserRole
+
+    model_config = {"from_attributes": True}
+
+
+class UpdateUser(SQLModel):
     first_name: str | None = None
     last_name: str | None = None
     role: UserRole | None = None
